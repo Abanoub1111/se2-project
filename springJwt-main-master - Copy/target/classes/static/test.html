@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Registration and Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<body>
+
+<div class="container my-5 p-5">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card m-2 p-2">
+                <div class ="card-header">Register</div>
+                <div class ="card-body">
+                    <form id="registrationForm">
+                        <div class="mb-3">
+                            <label for="firstName" class="form-label">First Name</label>
+                            <input type="text" class="form-control" id="firstName" name="firstName">
+                        </div>
+                        <div class="mb-3">
+                            <label for="lastName" class="form-label">Last Name</label>
+                            <input type="text" class="form-control" id="lastName" name="lastName">
+                        </div>
+                        <div class="mb-3">
+                            <label for="regUsername" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="regUsername" name="username">
+                        </div>
+                        <div class="mb-3">
+                            <label for="regPassword" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="regPassword" name="password">
+                        </div>
+                        <div class="mb-3">
+                            <label for="role" class="form-label">Role</label>
+                            <select class="form-select" id="role" name="role">
+                                <option value="USER">USER</option>
+                                <option value="ADMIN">ADMIN</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Register</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card m-2 p-2">
+                <div class ="card-header">Login</div>
+                <div class ="card-body">
+                    <form id="loginForm">
+                        <div class="mb-3">
+                            <label for="loginUsername" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="loginUsername" name="username">
+                        </div>
+                        <div class="mb-3">
+                            <label for="loginPassword" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="loginPassword" name="password">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    $(document).ready(function() {
+        // Register Form Submission
+        $('#registrationForm').submit(function(event) {
+            event.preventDefault(); // Prevent default form submission
+            var regFormData = {
+                firstName: $('#firstName').val(),
+                lastName: $('#lastName').val(),
+                username: $('#regUsername').val(),
+                password: $('#regPassword').val(),
+                role: $('#role').val()
+            };
+            // Perform AJAX request to register user
+            $.ajax({
+                url: 'http://localhost:8080/register',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(regFormData),
+                success: function(response) {
+                    console.log('Registration successful!');
+                    // You can redirect or show a success message here
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error);
+                    alert('Failed to register user. Please try again.'); // Show error message to user
+                }
+            });
+        });
+
+        // Login Form Submission
+        $('#loginForm').submit(function(event) {
+            event.preventDefault(); // Prevent default form submission
+            var loginFormData = {
+                username: $('#loginUsername').val(),
+                password: $('#loginPassword').val()
+            };
+            // Perform AJAX request to login user
+            $.ajax({
+                url: 'http://localhost:8080/login',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(loginFormData),
+                success: function(response) {
+                    console.log('Login successful!');
+                    window.location.href = 'home.html';
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error);
+                    alert('Failed to login. Please check your username and password.'); // Show error message to user
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>
